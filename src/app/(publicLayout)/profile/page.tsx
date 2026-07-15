@@ -15,15 +15,10 @@ import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, loading, updateUserProfile } = useAuthGuard() as ReturnType<
+  const { user, loading, updateUserProfile } = useAuthGuard();
 
-    typeof useAuthGuard
-  > & {
-    updateUserProfile: (updates: {
-      displayName?: string;
-      photoURL?: string;
-    }) => Promise<void>;
-  };
+
+
 
   const [name, setName] = useState(user?.displayName ?? "");
   const [photoURL, setPhotoURL] = useState(user?.photoURL ?? "");
@@ -59,9 +54,12 @@ export default function ProfilePage() {
         photoURL: photoURL.trim() || undefined,
       });
       toast.success("Profile updated successfully!");
-    } catch {
+
+   } catch (err) {
+      console.error("Profile update error:", err);
       toast.error("Failed to update profile. Please try again.");
     } finally {
+
       setSaving(false);
     }
   };

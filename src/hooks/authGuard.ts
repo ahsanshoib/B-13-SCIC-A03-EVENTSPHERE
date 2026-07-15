@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 export function useAuthGuard() {
-  const { user, loading } = useAuth();
+  const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!auth.loading && !auth.user) {
       router.push("/login");
     }
-  }, [user, loading, router]);
+  }, [auth.user, auth.loading, router]);
 
-  return { user, loading };
+  return auth;
 }
