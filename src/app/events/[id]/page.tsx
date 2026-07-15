@@ -57,11 +57,14 @@ export default function EventDetailsPage() {
   const [related, setRelated] = useState<EventItem[]>([]);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
-  const [alreadyBooked, setAlreadyBooked] = useState(false);
+
+const [alreadyBooked, setAlreadyBooked] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
 
 useEffect(() => {
     const found = getEventById(id);
     setEvent(found ?? null);
+    setActiveImage(0);
     if (found) {
       setRelated(getRelatedEvents(found.id, found.category));
       if (user?.email) {
@@ -132,9 +135,39 @@ useEffect(() => {
         <ArrowLeft className="mr-2 h-4 w-4" /> Back
       </Button>
 
-      <div className="relative h-64 sm:h-96 w-full rounded-xl overflow-hidden bg-secondary mb-8">
-        <Image src={event.imageUrl} alt={event.title} fill className="object-cover" />
-        <Badge className="absolute top-4 left-4">{event.category}</Badge>
+     <div className="mb-8">
+        <div className="relative h-64 sm:h-96 w-full rounded-xl overflow-hidden bg-secondary">
+          <Image
+            src={(event.imageGallery ?? [event.imageUrl])[activeImage]}
+            alt={event.title}
+            fill
+            className="object-cover"
+          />
+          <Badge className="absolute top-4 left-4">{event.category}</Badge>
+        </div>
+
+        {event.imageGallery && event.imageGallery.length > 1 && (
+          <div className="flex gap-3 mt-3">
+            {event.imageGallery.map((img, index) => (
+              <button
+                key={img}
+                onClick={() => setActiveImage(index)}
+                className={`relative h-16 w-24 sm:h-20 sm:w-28 rounded-lg overflow-hidden bg-secondary shrink-0 border-2 transition-colors ${
+                  activeImage === index
+                    ? "border-primary"
+                    : "border-transparent opacity-70 hover:opacity-100"
+                }`}
+              >
+                <Image
+                  src={img}
+                  alt={`${event.title} photo ${index + 1}`}
+                  fill
+                  className="object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

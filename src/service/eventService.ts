@@ -1,12 +1,17 @@
 import { EventItem, staticEventsData } from "@/types/event";
 
 const STORAGE_KEY = "eventsphere_events";
+const DATA_VERSION_KEY = "eventsphere_data_version";
+const CURRENT_DATA_VERSION = "2"; 
 
 function seedIfEmpty(): void {
   if (typeof window === "undefined") return;
   const existing = localStorage.getItem(STORAGE_KEY);
-  if (!existing) {
+  const version = localStorage.getItem(DATA_VERSION_KEY);
+
+  if (!existing || version !== CURRENT_DATA_VERSION) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(staticEventsData));
+    localStorage.setItem(DATA_VERSION_KEY, CURRENT_DATA_VERSION);
   }
 }
 

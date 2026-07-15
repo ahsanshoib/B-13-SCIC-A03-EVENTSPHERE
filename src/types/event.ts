@@ -9,6 +9,7 @@ export interface EventItem {
   location: string;
   category: string;
   imageUrl: string;
+  imageGallery?: string[];
   priority?: "low" | "medium" | "high";
   createdBy?: string;
 }
@@ -26,6 +27,7 @@ export const staticEventsData: EventItem[] = [
     location: "Dhaka",
     category: "Technology",
     imageUrl: "/event-1.jpg",
+    imageGallery: ["/event-1.jpg", "/event-1.1.jpg", "/event-1.2.jpg"],
     priority: "high",
   },
   {
@@ -40,6 +42,7 @@ export const staticEventsData: EventItem[] = [
     location: "Chittagong",
     category: "Sports",
     imageUrl: "/event-2.jpg",
+    imageGallery: ["/event-2.jpg", "/event-2.1.jpg", "/event-2.2.jpg"],
     priority: "medium",
   },
   {
@@ -54,6 +57,7 @@ export const staticEventsData: EventItem[] = [
     location: "Sylhet",
     category: "Culture",
     imageUrl: "/event-3.jpg",
+    imageGallery: ["/event-3.jpg", "/event-3.1.jpg", "/event-3.2.jpg"],
     priority: "high",
   },
   {
@@ -68,6 +72,7 @@ export const staticEventsData: EventItem[] = [
     location: "Rajshahi",
     category: "Exhibition",
     imageUrl: "/event-4.jpg",
+    imageGallery: ["/event-4.jpg", "/event-4.1.jpg", "/event-4.2.jpg"],
     priority: "low",
   },
   {
@@ -82,6 +87,7 @@ export const staticEventsData: EventItem[] = [
     location: "Cox's Bazar",
     category: "Music",
     imageUrl: "/event-5.jpg",
+    imageGallery: ["/event-5.jpg", "/event-5.1.jpg", "/event-5.2.jpg"],
     priority: "high",
   },
   {
@@ -96,6 +102,7 @@ export const staticEventsData: EventItem[] = [
     location: "Khulna",
     category: "Photography",
     imageUrl: "/event-6.jpg",
+    imageGallery: ["/event-6.jpg", "/event-6.1.jpg", "/event-6.2.jpg"],
     priority: "medium",
   },
   {
@@ -110,6 +117,7 @@ export const staticEventsData: EventItem[] = [
     location: "Barisal",
     category: "Tourism",
     imageUrl: "/event-7.jpg",
+    imageGallery: ["/event-7.jpg", "/event-7.1.jpg", "/event-7.2.jpg"],
     priority: "low",
   },
   {
@@ -124,6 +132,7 @@ export const staticEventsData: EventItem[] = [
     location: "Rangpur",
     category: "Workshop",
     imageUrl: "/event-8.jpg",
+    imageGallery: ["/event-8.jpg", "/event-8.1.jpg", "/event-8.2.jpg"],
     priority: "low",
   },
   {
@@ -138,6 +147,7 @@ export const staticEventsData: EventItem[] = [
     location: "Mymensingh",
     category: "Art",
     imageUrl: "/event-9.jpg",
+    imageGallery: ["/event-9.jpg", "/event-9.1.jpg", "/event-9.2.jpg"],
     priority: "medium",
   },
   {
@@ -152,6 +162,7 @@ export const staticEventsData: EventItem[] = [
     location: "Comilla",
     category: "Food",
     imageUrl: "/event-10.jpg",
+    imageGallery: ["/event-10.jpg", "/event-10.1.jpg", "/event-10.2.jpg"],
     priority: "medium",
   },
   {
@@ -166,6 +177,7 @@ export const staticEventsData: EventItem[] = [
     location: "Gazipur",
     category: "Adventure",
     imageUrl: "/event-11.jpg",
+    imageGallery: ["/event-11.jpg", "/event-11.1.jpg", "/event-11.2.jpg"],
     priority: "high",
   },
   {
@@ -180,6 +192,7 @@ export const staticEventsData: EventItem[] = [
     location: "Narshingdi",
     category: "Crafts",
     imageUrl: "/event-12.jpg",
+    imageGallery: ["/event-12.jpg", "/event-12.1.jpg", "/event-12.2.jpg"],
     priority: "low",
   },
 ];
