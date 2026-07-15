@@ -17,8 +17,12 @@ export default function EventsSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setEvents(getAllEvents().slice(0, 4));
-    setLoading(false);
+    const loadEvents = async () => {
+      const data = await getAllEvents();
+      setEvents(data.slice(0, 4));
+      setLoading(false);
+    };
+    loadEvents();
   }, []);
 
   return (
@@ -30,12 +34,9 @@ export default function EventsSection() {
             Handpicked experiences happening soon
           </p>
         </div>
-
-        <Button variant="ghost" render={<Link href="/events" />}
-        nativeButton={false}
-        className="hidden sm:flex">
-  View All <ArrowRight className="ml-2 h-4 w-4" />
-</Button>
+        <Button variant="ghost" render={<Link href="/events" />} nativeButton={false} className="hidden sm:flex">
+          View All <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -54,9 +55,6 @@ export default function EventsSection() {
                     alt={event.title}
                     fill
                     className="object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
                   />
                   <Badge className="absolute top-3 left-3">{event.category}</Badge>
                 </div>
@@ -78,9 +76,9 @@ export default function EventsSection() {
                   <span className="font-bold text-primary">
                     {formatCurrency(event.price)}
                   </span>
-                <Button size="sm" render={<Link href={`/events/${event.id}`} />}nativeButton={false}>
-  View Details
-</Button>
+                  <Button size="sm" render={<Link href={`/events/${event.id}`} />} nativeButton={false}>
+                    View Details
+                  </Button>
                 </CardFooter>
               </Card>
             ))}

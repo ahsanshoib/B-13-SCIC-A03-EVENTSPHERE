@@ -75,7 +75,7 @@ export default function DashboardCreateEventPage() {
 
     setLoading(true);
     try {
-      addEvent({
+      await addEvent({
         title: form.title,
         shortDescription: form.shortDescription,
         fullDescription: form.fullDescription,
@@ -200,9 +200,12 @@ export default function DashboardCreateEventPage() {
 
             <div className="space-y-1.5">
               <Label htmlFor="priority">Priority</Label>
-              <Select value={form.priority} onValueChange={(v) => handleChange("priority", v ?? "medium")}>
+              <Select
+                value={form.priority}
+                onValueChange={(v) => handleChange("priority", v ?? "medium")}
+              >
                 <SelectTrigger id="priority" className="w-full">
-                  <SelectValue />
+                  <SelectValue>{form.priority}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="low">Low</SelectItem>

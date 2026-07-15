@@ -36,10 +36,9 @@ export function createBooking(
 
 export function cancelBooking(id: string): boolean {
   const bookings = getAll();
-  const index = bookings.findIndex((b) => b.id === id);
-  if (index === -1) return false;
-  bookings[index].status = "cancelled";
-  saveAll(bookings);
+  const filtered = bookings.filter((b) => b.id !== id);
+  if (filtered.length === bookings.length) return false;
+  saveAll(filtered);
   return true;
 }
 

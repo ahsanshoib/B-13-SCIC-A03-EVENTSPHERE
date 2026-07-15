@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Eye, Trash2, Plus,Pencil, ArrowLeft } from "lucide-react";
+import { Eye, Trash2, Plus, Pencil, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -15,32 +15,32 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EventItem } from "@/types/event";
-import { getAllEvents, deleteEvent,updateEvent } from "@/service/eventService";
+import { getAllEvents, deleteEvent, updateEvent } from "@/service/eventService";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import DeleteEventModal from "@/components/modals/DeleteEventModal";
-import updateEventModal from "@/components/modals/UpdateEventModal";
-import { toast } from "sonner";
 import UpdateEventModal from "@/components/modals/UpdateEventModal";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
-
 
 export default function ManageEventsPage() {
-  const [events, setEvents] = useState<EventItem[]>([]);
   const router = useRouter();
+  const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteTarget, setDeleteTarget] = useState<EventItem | null>(null);
   const [editTarget, setEditTarget] = useState<EventItem | null>(null);
-  const {isAdmin} = useAuth();
 
   useEffect(() => {
-    setEvents(getAllEvents());
-    setLoading(false);
+    const loadEvents = async () => {
+      const data = await getAllEvents();
+      setEvents(data);
+      setLoading(false);
+    };
+    loadEvents();
   }, []);
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
-    const success = deleteEvent(deleteTarget.id);
+    const success = await deleteEvent(deleteTarget.id);
     if (success) {
       setEvents((prev) => prev.filter((e) => e.id !== deleteTarget.id));
       toast.success("Event deleted successfully");
@@ -50,8 +50,8 @@ export default function ManageEventsPage() {
     setDeleteTarget(null);
   };
 
-  const handleUpdateConfirm = (id: string, updates: Partial<EventItem>) => {
-    const updated = updateEvent(id, updates);
+  const handleUpdateConfirm = async (id: string, updates: Partial<EventItem>) => {
+    const updated = await updateEvent(id, updates);
     if (updated) {
       setEvents((prev) => prev.map((e) => (e.id === id ? updated : e)));
       toast.success("Event updated successfully");
@@ -61,7 +61,7 @@ export default function ManageEventsPage() {
     setEditTarget(null);
   };
 
-return (
+  return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       <Button
         variant="ghost"
@@ -73,17 +73,15 @@ return (
       </Button>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-
-
         <div>
           <h1 className="text-3xl font-bold mb-2">Manage Events</h1>
           <p className="text-muted-foreground">
             {loading ? "Loading..." : `${events.length} events listed`}
           </p>
         </div>
-      <Button render={<Link href="/items/add" />} nativeButton={false}>
-  <Plus className="mr-2 h-4 w-4" /> Add Event
-</Button>
+        <Button render={<Link href="/items/add" />} nativeButton={false}>
+          <Plus className="mr-2 h-4 w-4" /> Add Event
+        </Button>
       </div>
 
       <div className="rounded-xl border border-border/50 bg-card/50 overflow-x-auto">
@@ -107,7 +105,6 @@ return (
               </TableRow>
             ) : events.length === 0 ? (
               <TableRow>
-
                 <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
                   No events yet. Add your first event to get started.
                 </TableCell>
@@ -133,18 +130,15 @@ return (
                   <TableCell>
                     <Badge variant="secondary">{event.category}</Badge>
                   </TableCell>
-
                   <TableCell className="text-sm text-muted-foreground">
-  {formatDate(event.date)}
-</TableCell>
-
+                    {formatDate(event.date)}
+                  </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
                     {event.location}
                   </TableCell>
                   <TableCell className="text-sm font-semibold text-primary">
                     {formatCurrency(event.price)}
                   </TableCell>
-
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
                       <Button variant="ghost" size="icon" render={<Link href={`/events/${event.id}`} />} nativeButton={false}>
@@ -157,8 +151,7 @@ return (
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
-
-             <Button
+                      <Button
                         variant="ghost"
                         size="icon"
                         className="text-destructive hover:text-destructive"
@@ -166,12 +159,8 @@ return (
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
-
                     </div>
                   </TableCell>
-
-
-
                 </TableRow>
               ))
             )}
@@ -184,14 +173,11 @@ return (
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDeleteConfirm}
       />
-
-
-        <UpdateEventModal
+      <UpdateEventModal
         event={editTarget}
         onClose={() => setEditTarget(null)}
         onConfirm={handleUpdateConfirm}
       />
-
     </div>
   );
 }

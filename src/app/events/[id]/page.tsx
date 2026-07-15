@@ -23,8 +23,6 @@ import { EventItem } from "@/types/event";
 import { getEventById, getRelatedEvents } from "@/service/eventService";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { toast } from "sonner";
-import { Search, SlidersHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
-
 import { useAuth } from "@/hooks/useAuth";
 import { createBooking, hasUserBookedEvent } from "@/service/bookingService";
 import BookingConfirmModal from "@/components/modals/BookingConfirmModal";
@@ -52,25 +50,28 @@ export default function EventDetailsPage() {
   const router = useRouter();
   const id = params.id as string;
 
- const { user } = useAuth();
+  const { user } = useAuth();
   const [event, setEvent] = useState<EventItem | null | undefined>(undefined);
   const [related, setRelated] = useState<EventItem[]>([]);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
-
-const [alreadyBooked, setAlreadyBooked] = useState(false);
+  const [alreadyBooked, setAlreadyBooked] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
 
-useEffect(() => {
-    const found = getEventById(id);
-    setEvent(found ?? null);
-    setActiveImage(0);
-    if (found) {
-      setRelated(getRelatedEvents(found.id, found.category));
-      if (user?.email) {
-        setAlreadyBooked(hasUserBookedEvent(user.email, found.id));
+  useEffect(() => {
+    const loadEvent = async () => {
+      const found = await getEventById(id);
+      setEvent(found ?? null);
+      setActiveImage(0);
+      if (found) {
+        const relatedEvents = await getRelatedEvents(found.id, found.category);
+        setRelated(relatedEvents);
+        if (user?.email) {
+          setAlreadyBooked(hasUserBookedEvent(user.email, found.id));
+        }
       }
-    }
+    };
+    loadEvent();
   }, [id, user]);
 
   const handleBookNowClick = () => {
@@ -117,9 +118,9 @@ useEffect(() => {
         <p className="text-muted-foreground mb-6">
           This event may have been removed or doesn&apos;t exist.
         </p>
-     <Button render={<Link href="/events" />} nativeButton={false}>
-  Back to Explore
-</Button>
+        <Button render={<Link href="/events" />} nativeButton={false}>
+          Back to Explore
+        </Button>
       </div>
     );
   }
@@ -135,7 +136,7 @@ useEffect(() => {
         <ArrowLeft className="mr-2 h-4 w-4" /> Back
       </Button>
 
-     <div className="mb-8">
+      <div className="mb-8">
         <div className="relative h-64 sm:h-96 w-full rounded-xl overflow-hidden bg-secondary">
           <Image
             src={(event.imageGallery ?? [event.imageUrl])[activeImage]}
@@ -268,7 +269,7 @@ useEffect(() => {
               <p className="text-3xl font-bold text-primary mb-6">
                 {formatCurrency(event.price)}
               </p>
-          <Button
+              <Button
                 className="w-full h-11 mb-3"
                 onClick={handleBookNowClick}
                 disabled={alreadyBooked}
@@ -284,7 +285,6 @@ useEffect(() => {
       </div>
 
       {related.length > 0 && (
-
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-6">Related Events</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -307,7 +307,7 @@ useEffect(() => {
         </div>
       )}
 
-<BookingConfirmModal
+      <BookingConfirmModal
         event={showBookingModal ? event : null}
         onClose={() => setShowBookingModal(false)}
         onConfirm={handleConfirmBooking}
@@ -316,5 +316,3 @@ useEffect(() => {
     </div>
   );
 }
-
-    

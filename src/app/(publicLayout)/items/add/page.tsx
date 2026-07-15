@@ -79,7 +79,7 @@ export default function AddEventPage() {
 
     setLoading(true);
     try {
-      addEvent({
+      await addEvent({
         title: form.title,
         shortDescription: form.shortDescription,
         fullDescription: form.fullDescription,
@@ -101,7 +101,7 @@ export default function AddEventPage() {
     }
   };
 
-return (
+  return (
     <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-12">
       <Button
         variant="ghost"
@@ -114,7 +114,6 @@ return (
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Add New Event</h1>
-
         <p className="text-muted-foreground">
           Fill in the details below to publish a new event listing
         </p>
@@ -244,7 +243,7 @@ return (
                 onValueChange={(v) => handleChange("priority", v ?? "medium")}
               >
                 <SelectTrigger id="priority" className="w-full">
-                  <SelectValue />
+                  <SelectValue>{form.priority}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="low">Low</SelectItem>

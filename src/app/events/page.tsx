@@ -43,11 +43,12 @@ function EventsPageContent() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setEvents(getAllEvents());
+    const loadEvents = async () => {
+      const data = await getAllEvents();
+      setEvents(data);
       setLoading(false);
-    }, 600);
-    return () => clearTimeout(timer);
+    };
+    loadEvents();
   }, []);
 
   const filtered = useMemo(() => {

@@ -89,17 +89,14 @@ export default function MyBookingsPage() {
                     className="object-cover"
                   />
                 </div>
+
                 <div className="flex-1">
-                  <div className="flex items-start justify-between gap-2 mb-2">
+
+                 <div className="flex items-start justify-between gap-2 mb-2">
                     <h3 className="font-semibold">{booking.eventTitle}</h3>
-                    <Badge
-                      variant={
-                        booking.status === "confirmed" ? "default" : "secondary"
-                      }
-                    >
-                      {booking.status === "confirmed" ? "Confirmed" : "Cancelled"}
-                    </Badge>
+                    <Badge>Confirmed</Badge>
                   </div>
+                  
                   <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-3">
                     <span className="flex items-center gap-1.5">
                       <CalendarDays className="h-3.5 w-3.5" />
@@ -123,15 +120,13 @@ export default function MyBookingsPage() {
                       >
                         View Event
                       </Button>
-                      {booking.status === "confirmed" && (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => setCancelTarget(booking)}
-                        >
-                          Cancel
-                        </Button>
-                      )}
+                    <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => setCancelTarget(booking)}
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   </div>
                 </div>

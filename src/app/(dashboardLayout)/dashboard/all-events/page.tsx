@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EventItem } from "@/types/event";
-import { getAllEvents, deleteEvent ,updateEvent } from "@/service/eventService";
+import { getAllEvents, deleteEvent, updateEvent } from "@/service/eventService";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import DeleteEventModal from "@/components/modals/DeleteEventModal";
 import UpdateEventModal from "@/components/modals/UpdateEventModal";
@@ -27,12 +27,16 @@ export default function DashboardAllEventsPage() {
   const [editTarget, setEditTarget] = useState<EventItem | null>(null);
 
   useEffect(() => {
-    setEvents(getAllEvents());
+    const loadEvents = async () => {
+      const data = await getAllEvents();
+      setEvents(data);
+    };
+    loadEvents();
   }, []);
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
-    const success = deleteEvent(deleteTarget.id);
+    const success = await deleteEvent(deleteTarget.id);
     if (success) {
       setEvents((prev) => prev.filter((e) => e.id !== deleteTarget.id));
       toast.success("Event deleted successfully");
@@ -42,8 +46,8 @@ export default function DashboardAllEventsPage() {
     setDeleteTarget(null);
   };
 
-  const handleUpdateConfirm = (id: string, updates: Partial<EventItem>) => {
-    const updated = updateEvent(id, updates);
+  const handleUpdateConfirm = async (id: string, updates: Partial<EventItem>) => {
+    const updated = await updateEvent(id, updates);
     if (updated) {
       setEvents((prev) => prev.map((e) => (e.id === id ? updated : e)));
       toast.success("Event updated successfully");
@@ -104,20 +108,16 @@ export default function DashboardAllEventsPage() {
                   <TableCell className="text-sm">{event.rating}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
-
-                     <Button variant="ghost" size="icon" render={<Link href={`/events/${event.id}`} />}>
-  <Eye className="h-4 w-4" />
-</Button>
-
-<Button
+                      <Button variant="ghost" size="icon" render={<Link href={`/events/${event.id}`} />} nativeButton={false}>
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => setEditTarget(event)}
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
-
-
                       <Button
                         variant="ghost"
                         size="icon"
@@ -140,14 +140,11 @@ export default function DashboardAllEventsPage() {
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDeleteConfirm}
       />
-
-
       <UpdateEventModal
         event={editTarget}
         onClose={() => setEditTarget(null)}
         onConfirm={handleUpdateConfirm}
       />
-      
     </div>
   );
 }
