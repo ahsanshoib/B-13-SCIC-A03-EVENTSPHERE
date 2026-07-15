@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CalendarDays, DollarSign, Star, Tag } from "lucide-react";
+
 import {
   BarChart,
   Bar,
@@ -13,15 +14,29 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
 } from "recharts";
+
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatsCard from "@/components/designs/StatsCard";
 import { EventItem } from "@/types/event";
 import { getAllEvents } from "@/service/eventService";
 import { formatCurrency } from "@/lib/utils";
 
-const COLORS = ["#7c6cf6", "#4dd6a8", "#f6b93c", "#e85c5c", "#5cb3f6", "#c778e0"];
+const COLORS = [
+  "#f4d03f", // yellow
+  "#f5b041", // yellow-orange
+  "#f39c12", // orange
+  "#e8674a", // red-orange
+  "#e74c3c", // red
+  "#c0392b", // red-violet
+  "#9b59b6", // violet
+  "#7d5ba6", // blue-violet
+  "#5b6fd6", // blue
+  "#48a9c5", // blue-green
+  "#45b39d", // green
+  "#7fc97f", // yellow-green
+];
 
 export default function DashboardOverviewPage() {
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -80,7 +95,8 @@ export default function DashboardOverviewPage() {
             <CardTitle className="text-base">Events by Category</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={280}>
+
+<ResponsiveContainer width="100%" height={320}>
               <PieChart>
                 <Pie
                   data={categoryData}
@@ -88,7 +104,7 @@ export default function DashboardOverviewPage() {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={90}
+                  outerRadius={120}
                   label={(entry) => entry.name}
                 >
                   {categoryData.map((_, index) => (
@@ -102,9 +118,11 @@ export default function DashboardOverviewPage() {
                     borderRadius: "8px",
                   }}
                 />
-                <Legend />
               </PieChart>
             </ResponsiveContainer>
+
+
+
           </CardContent>
         </Card>
 

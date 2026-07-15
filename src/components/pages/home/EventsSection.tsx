@@ -76,7 +76,7 @@ export default function EventsSection() {
                   <span className="font-bold text-primary">
                     {formatCurrency(event.price)}
                   </span>
-                  <Button size="sm" render={<Link href={`/events/${event.id}`} />} nativeButton={false}>
+                  <Button size="sm" render={<Link href={`/events/${event.id}` } />} nativeButton={false}>
                     View Details
                   </Button>
                 </CardFooter>

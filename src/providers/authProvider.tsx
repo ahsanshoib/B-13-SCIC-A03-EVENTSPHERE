@@ -25,7 +25,7 @@ interface AuthContextType {
   signup: (name: string, email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
-  updateUserProfile: (updates: { displayName?: string; photoURL?: string }) => Promise<void>;
+  updateUserProfile: (updates: { displayName?: string; photoURL?: string | null }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -59,9 +59,9 @@ const logout = async () => {
     await signOut(auth);
   };
 
-  const updateUserProfile = async (updates: {
+const updateUserProfile = async (updates: {
     displayName?: string;
-    photoURL?: string;
+    photoURL?: string | null;
   }) => {
     if (!auth.currentUser) return;
     await updateProfile(auth.currentUser, updates);

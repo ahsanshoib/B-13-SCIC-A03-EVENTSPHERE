@@ -50,12 +50,10 @@ export default function Header() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const navLinks: NavLink[] = user
-    ? [
-        ...publicLinks,
-        ...(isAdmin ? adminLinks : userLinks),
-        { href: "/contact", label: "Contact" },
-      ]
+const navLinks: NavLink[] = user
+    ? isAdmin
+      ? [...publicLinks, ...adminLinks, { href: "/dashboard/statistics", label: "Statistics" }]
+      : [...publicLinks, ...userLinks, { href: "/contact", label: "Contact" }]
     : [...publicLinks, { href: "/contact", label: "Contact" }];
 
   const handleLogout = async () => {
@@ -108,7 +106,7 @@ export default function Header() {
                   >
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        src={user.photoURL ?? undefined}
+                        src={user.photoURL || undefined}
                         alt={user.displayName ?? "User"}
                       />
                       <AvatarFallback className="bg-primary text-primary-foreground text-xs">

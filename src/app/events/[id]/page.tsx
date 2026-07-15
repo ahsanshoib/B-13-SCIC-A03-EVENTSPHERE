@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { createBooking, hasUserBookedEvent } from "@/service/bookingService";
 import BookingConfirmModal from "@/components/modals/BookingConfirmModal";
+import { incrementView } from "@/service/viewService";
 
 const reviews = [
   {
@@ -58,12 +59,13 @@ export default function EventDetailsPage() {
   const [alreadyBooked, setAlreadyBooked] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
 
-  useEffect(() => {
+useEffect(() => {
     const loadEvent = async () => {
       const found = await getEventById(id);
       setEvent(found ?? null);
       setActiveImage(0);
       if (found) {
+        incrementView(found.id);
         const relatedEvents = await getRelatedEvents(found.id, found.category);
         setRelated(relatedEvents);
         if (user?.email) {

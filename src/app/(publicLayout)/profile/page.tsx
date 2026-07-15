@@ -48,10 +48,11 @@ export default function ProfilePage() {
     }
 
     setSaving(true);
+
     try {
-      await updateUserProfile({
+   await updateUserProfile({
         displayName: name.trim(),
-        photoURL: photoURL.trim() || undefined,
+        photoURL: photoURL.trim() ? photoURL.trim() : null,
       });
       toast.success("Profile updated successfully!");
 

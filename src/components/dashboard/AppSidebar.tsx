@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, CalendarPlus, ListChecks, CalendarDays, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,9 +17,11 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { LayoutDashboard, CalendarPlus, ListChecks, CalendarDays, LogOut, BarChart3 } from "lucide-react";
 
 const items = [
   { title: "Overview", url: "/dashboard/overview", icon: LayoutDashboard },
+  { title: "Statistics", url: "/dashboard/statistics", icon: BarChart3 },
   { title: "All Events", url: "/dashboard/all-events", icon: ListChecks },
   { title: "Create Event", url: "/dashboard/create-event", icon: CalendarPlus },
 ];
