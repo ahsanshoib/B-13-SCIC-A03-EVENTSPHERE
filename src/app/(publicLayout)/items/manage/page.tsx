@@ -21,6 +21,7 @@ import DeleteEventModal from "@/components/modals/DeleteEventModal";
 import UpdateEventModal from "@/components/modals/UpdateEventModal";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ManageEventsPage() {
   const router = useRouter();
@@ -97,12 +98,14 @@ export default function ManageEventsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                  Loading events...
-                </TableCell>
-              </TableRow>
+           {loading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell colSpan={6}>
+                    <Skeleton className="h-10 w-full" />
+                  </TableCell>
+                </TableRow>
+              ))
             ) : events.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">

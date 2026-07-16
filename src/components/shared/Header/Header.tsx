@@ -201,11 +201,21 @@ const navLinks: NavLink[] = user
               {link.label}
             </Link>
           ))}
-          <div className="pt-2 flex flex-col gap-2">
+<div className="pt-2 flex flex-col gap-2">
             {user ? (
-              <Button variant="destructive" onClick={handleLogout} className="w-full">
-                Logout
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  render={<Link href="/profile" onClick={() => setMobileOpen(false)} />}
+                  nativeButton={false}
+                  className="w-full"
+                >
+                  My Profile
+                </Button>
+                <Button variant="destructive" onClick={handleLogout} className="w-full">
+                  Logout
+                </Button>
+              </>
             ) : (
               <>
                 <Button

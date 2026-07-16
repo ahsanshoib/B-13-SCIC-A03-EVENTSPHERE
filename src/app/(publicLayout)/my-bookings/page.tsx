@@ -15,16 +15,20 @@ import { formatCurrency, formatDate } from "@/lib/utils";
 import CancelBookingModal from "@/components/modals/CancelBookingModal";
 import { toast } from "sonner";
 import Spinner from "@/components/elements/Spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MyBookingsPage() {
   const { user, loading } = useAuthGuard();
   const router = useRouter();
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [cancelTarget, setCancelTarget] = useState<Booking | null>(null);
 
-  useEffect(() => {
+const [bookings, setBookings] = useState<Booking[]>([]);
+  const [cancelTarget, setCancelTarget] = useState<Booking | null>(null);
+  const [dataLoading, setDataLoading] = useState(true);
+
+ useEffect(() => {
     if (user?.email) {
       setBookings(getUserBookings(user.email));
+      setDataLoading(false);
     }
   }, [user]);
 
@@ -66,7 +70,14 @@ export default function MyBookingsPage() {
         </p>
       </div>
 
-      {bookings.length === 0 ? (
+     {dataLoading ? (
+        <div className="space-y-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="h-32 rounded-xl" />
+          ))}
+        </div>
+      ) : bookings.length === 0 ? (
+
         <div className="text-center py-20">
           <Ticket className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground mb-6">

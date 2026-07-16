@@ -16,7 +16,8 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden gradient-hero min-h-[65vh] flex items-center">
+
+    <section className="relative overflow-hidden gradient-hero-animated min-h-[65vh] flex items-center">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 w-full">
         <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground mb-6">

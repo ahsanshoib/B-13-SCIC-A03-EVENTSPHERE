@@ -5,13 +5,15 @@ import StatisticsSection from "@/components/pages/home/StatisticsSection";
 import TestimonialSection from "@/components/pages/home/TestimonialSection";
 import FaqSection from "@/components/pages/home/FaqSection";
 import SubscribeSection from "@/components/pages/home/SubscribeSection";
+import HighlightsSection from "@/components/pages/home/HighlightsSection";
 
 export default function HomePage() {
   return (
     <>
-      <HeroSection />
+   <HeroSection />
       <ServiceSection />
       <EventsSection />
+      <HighlightsSection />
       <StatisticsSection />
       <TestimonialSection />
       <FaqSection />

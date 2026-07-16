@@ -20,16 +20,19 @@ import { formatCurrency, formatDate } from "@/lib/utils";
 import DeleteEventModal from "@/components/modals/DeleteEventModal";
 import UpdateEventModal from "@/components/modals/UpdateEventModal";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardAllEventsPage() {
-  const [events, setEvents] = useState<EventItem[]>([]);
+const [events, setEvents] = useState<EventItem[]>([]);
   const [deleteTarget, setDeleteTarget] = useState<EventItem | null>(null);
   const [editTarget, setEditTarget] = useState<EventItem | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+useEffect(() => {
     const loadEvents = async () => {
       const data = await getAllEvents();
       setEvents(data);
+      setLoading(false);
     };
     loadEvents();
   }, []);
@@ -79,7 +82,15 @@ export default function DashboardAllEventsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {events.length === 0 ? (
+{loading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell colSpan={6}>
+                    <Skeleton className="h-10 w-full" />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : events.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
                   No events found.
